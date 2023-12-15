@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
 import { Navbar, Sidebar } from "./components";
+import { Home, CreateCampaign } from "./pages";
 
 const App = () => {
   return (
@@ -13,6 +13,7 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/create-campaign" element={<CreateCampaign />} />
         </Routes>
       </div>
     </div>
