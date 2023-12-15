@@ -1,23 +1,27 @@
 const express = require('express');
 const fs = require('fs');
+const { ThirdwebSDK } = require("@thirdweb-dev/sdk");
+const { Omchain } = require("@thirdweb-dev/chains");
+
+require('dotenv').config();
 const axios = require('axios');
 const app = express();
 const port = 3000; // Uygun bir port numarası seçebilirsiniz
+
+
 
 // Middleware: Gelen isteği JSON formatına dönüştür
 app.use(express.json());
 
 // Fonksiyon: Web3 kontratına istek gönderme
-async function sendContractRequest(id) {
-  const contractEndpoint = `https://localhost:3000/contract?id=${id}`; // SC'nin varsayılan endpointi
-  const requestData = { status: 'inactivate', id };
+async function sendContractRequest() {
+    const sdk = new ThirdwebSDK(Omchain, {
+        clientId: "YOUR_CLIENT_ID",
+      });
+      const contract = await sdk.getContract("YOUR_CONTRACT_ADDRESS");
 
-  try {
-    const response = await axios.post(contractEndpoint, requestData);
-    console.log('Kontrat isteği başarıyla gönderildi:', response.data);
-  } catch (error) {
-    console.error('Kontrat isteği gönderilirken hata oluştu:', error);
-  }
+
+      
 }
 
 // Endpoint: /validate
