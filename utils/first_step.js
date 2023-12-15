@@ -1,9 +1,12 @@
+const express = require('express');
 const QRCode = require('qrcode');
 const fs = require('fs');
 const crypto = require('crypto');
 const axios = require('axios');
+require('dotenv').config();
+const app = express();
 
-// Fonksiyon: QR kod oluşturma ve WhatsApp'a gönderme
+// QR kod oluşturma ve WhatsApp'a gönderme fonksiyonu
 async function generateQRAndSendWhatsApp(urlParams) {
     const urlString = `http://localhost:3000/yuppi?id=${urlParams.id}&secretKey=`;
 
@@ -12,30 +15,28 @@ async function generateQRAndSendWhatsApp(urlParams) {
         console.log('QR kod başarıyla oluşturuldu!');
         const secretKey = crypto.randomBytes(20).toString('hex');
 
-
         const data = { ...urlParams, secretKey };
         const jsonData = JSON.stringify(data, null, 2);
-        
 
         fs.writeFile('./id_secret.json', jsonData, async (err) => {
             if (err) throw err;
             console.log('ID ve Secret Key başarıyla id_secret.json dosyasına yazıldı!');
-            // whatsappOptions rapidapi üzerinden çekilme yaptığından kaynaklı olarak api bilgileri her 10 requestte bir yeni bir hesap açılarak güncellenmelidir.
+
             const whatsappOptions = {
                 method: 'POST',
                 url: 'https://whatsapp-messaging-hub.p.rapidapi.com/WhatsappSendMessage',
                 headers: {
                     'content-type': 'application/json',
-                    'X-RapidAPI-Key': '1440bf2d1emsh7e864222097bf28p1666fbjsn365f056ce1b7',
+                    'X-RapidAPI-Key': process.env.XRapidAPIKey, // RapidAPI anahtarınızı buraya ekleyin
                     'X-RapidAPI-Host': 'whatsapp-messaging-hub.p.rapidapi.com'
                 },
                 data: {
-                    token: 'ZX0owD5FjrpA5sciTJevggzkv0eoi12luDe98AowisxmFBeyYsF2y4r3YzEKL64k',
+                    token: process.env.RapidAPI_TOKEN, // WhatsApp token'ınızı buraya ekleyin
                     number: urlParams.telno1,
-                    message: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=id=${urlParams.id}secretKey=` // bu localhostun url bilgisidir 
-
-                }   
+                    message: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=id=${urlParams.id}&secretKey=${secretKey}` // bu localhostun url bilgisidir
+                }
             };
+
             try {
                 const whatsappResponse = await axios.request(whatsappOptions);
                 console.log(whatsappResponse.data);
@@ -45,12 +46,12 @@ async function generateQRAndSendWhatsApp(urlParams) {
                     url: 'https://whatsapp-messaging-hub.p.rapidapi.com/WhatsappSendMessage',
                     headers: {
                         'content-type': 'application/json',
-                        'X-RapidAPI-Key': '1440bf2d1emsh7e864222097bf28p1666fbjsn365f056ce1b7',
+                        'X-RapidAPI-Key': process.env.XRapidAPIKey, // RapidAPI anahtarınızı buraya ekleyin
                         'X-RapidAPI-Host': 'whatsapp-messaging-hub.p.rapidapi.com'
                     },
                     data: {
-                        token: 'ZX0owD5FjrpA5sciTJevggzkv0eoi12luDe98AowisxmFBeyYsF2y4r3YzEKL64k',
-                        number: dynamicParams.telno2,
+                        token: process.env.RapidAPI_TOKEN, // WhatsApp token'ınızı buraya ekleyin
+                        number: urlParams.telno2,
                         message: secretKey
                     }
                 };
@@ -64,12 +65,30 @@ async function generateQRAndSendWhatsApp(urlParams) {
     });
 }
 
-const dynamicParams = {
-    id: 1,
-    telno1: "905555555555", 
-    telno2: "905555555555",
+// Express ile QR kodu oluşturma ve WhatsApp'a gönderme işlemini başlatma
+app.get('/generateQRAndSendWhatsApp', async (req, res) => {
+    const { id, telno1, telno2 } = req.query;
 
-};
+    if (!id || !telno1 || !telno2) {
+        return res.status(400).send('Lütfen geçerli parametreleri sağlayın: id, telno1, telno2');
+    }
 
-// QR kod oluştur ve WhatsApp'a gönder
-generateQRAndSendWhatsApp(dynamicParams);
+    const dynamicParams = {
+        id,
+        telno1,
+        telno2
+    };
+
+    try {
+        await generateQRAndSendWhatsApp(dynamicParams);
+        res.send('QR kod oluşturuldu ve WhatsApp\'a gönderildi.');
+    } catch (error) {
+        res.status(500).send('Bir hata oluştu: ' + error.message);
+    }
+});
+
+// Express sunucusunu başlatma
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Express sunucusu çalışıyor. Port: ${PORT}`);
+});
