@@ -3,18 +3,26 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { loader } from "../assets";
 import FundCard from "./FundCard";
+import { useStateContext } from "../context";
 
 const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { search } = useStateContext();
 
   const handleNavigate = (campaign) => {
     navigate(`/campaign-details/${campaign.title}`, { state: campaign });
   };
 
+  const filterByTiltle = (campaigns) => {
+    return campaigns.filter((campaign) =>
+      campaign.title.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+
   return (
     <div>
-      <h1 className="font-epilogue font-semibold text-[18px] text-white text-left">
+      <h1 className="font-epilogue font-semibold text-[18px] text-black text-left">
         {title} ({campaigns.length})
       </h1>
 
@@ -37,7 +45,7 @@ const DisplayCampaigns = ({ title, isLoading, campaigns }) => {
 
         {!isLoading &&
           campaigns.length > 0 &&
-          campaigns.map((campaign) => (
+          filterByTiltle(campaigns).map((campaign) => (
             <FundCard
               key={uuidv4()}
               {...campaign}

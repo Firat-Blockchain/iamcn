@@ -1,40 +1,59 @@
-import React, { useContext, createContext } from "react";
+import React, { useContext, createContext, useState } from "react";
 import {
   useAddress,
   useContract,
   useMetamask,
-  useDisconnect,
   useContractWrite,
+  useDisconnect,
 } from "@thirdweb-dev/react";
+import { ethers } from "ethers";
 
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const address = useAddress();
-  const connect = useMetamask();
-  const disconnect = useDisconnect();
   const { contract } = useContract(
-    "0xb882B2314A7f50d84E515603f4a997C11F78eA58"
+    "0x69E3caaD4769B5036EaA1Ce3B3DB99e373273D56"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
     "createCampaign"
   );
 
+  const { mutateAsync: updateCampaignStatus } = useContractWrite(
+    contract,
+    "updateCampaignStatus"
+  );
+
+  const [search, setSearch] = useState("");
+
+  const address = useAddress();
+  const connect = useMetamask();
+  const disconnect = useDisconnect();
+
   const publishCampaign = async (form) => {
     try {
       const data = await createCampaign({
         args: [
-          address, // owner
-          form.title, // title
-          form.description, // description
+          address,
+          form.title,
+          form.description,
           form.target,
-          new Date(form.deadline).getTime(), // deadline,
+          new Date(form.deadline).getTime(),
           form.image,
         ],
       });
 
       console.log("contract call success", data);
+    } catch (error) {
+      console.log("contract call failure", error);
+    }
+  };
+
+  const publishCampaignStatus = async (pId) => {
+    try {
+      await updateCampaignStatus({
+        args: [pId, false],
+      });
     } catch (error) {
       console.log("contract call failure", error);
     }
@@ -54,6 +73,7 @@ export const StateContextProvider = ({ children }) => {
       ),
       image: campaign.image,
       pId: i,
+      status: campaign.status,
     }));
 
     return parsedCampaings;
@@ -97,13 +117,17 @@ export const StateContextProvider = ({ children }) => {
     <StateContext.Provider
       value={{
         address,
+        contract,
         connect,
         createCampaign: publishCampaign,
         getCampaigns,
-        disconnect,
         getUserCampaigns,
         donate,
         getDonations,
+        disconnect,
+        search,
+        setSearch,
+        updateCampaignStatus: publishCampaignStatus,
       }}
     >
       {children}
