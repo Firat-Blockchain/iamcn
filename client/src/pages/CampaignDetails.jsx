@@ -4,7 +4,8 @@ import { ethers } from "ethers";
 import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
-import { thirdweb } from "../assets";
+import { logo } from "../assets";
+import { api_url } from "../utils/global";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
@@ -13,15 +14,38 @@ const CampaignDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState([]);
-
   const remainingDays = daysLeft(state.deadline);
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
-
     setDonators(data);
   };
-  
+
+  const sumDonations = donators.reduce((acc, curr) => {
+    return acc + Number(curr.donation);
+  }, 0);
+
+  const isCompleted = state.target <= sumDonations ? true : false;
+
+  const fetchNotify = async () => {
+    const req = await fetch(
+      `${api_url}/generateQRAndSendWhatsApp?id=${state.pId}&telno1=905372553088&telno2=905512623505`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": true,
+        },
+      }
+    );
+  };
+
+  console.log(isCompleted);
+
+  useEffect(() => {
+    isCompleted && fetchNotify();
+  }, [isCompleted, state.status]);
+
   useEffect(() => {
     if (contract) fetchDonators();
   }, [contract, address]);
@@ -31,14 +55,13 @@ const CampaignDetails = () => {
 
     await donate(state.pId, amount);
 
-    navigate("/");
+    !isCompleted && navigate("/");
     setIsLoading(false);
   };
 
   return (
-    <div>
+    <div className="mt-20">
       {isLoading && <Loader />}
-
       <div className="w-full flex md:flex-row flex-col mt-10 gap-[30px]">
         <div className="flex-1 flex-col">
           <img
@@ -46,7 +69,7 @@ const CampaignDetails = () => {
             alt="campaign"
             className="w-full h-[410px] object-cover rounded-xl"
           />
-          <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2">
+          <div className="relative w-full h-[20px] bg-secondary mt-2 rounded">
             <div
               className="absolute h-full bg-[#4acd8d]"
               style={{
@@ -80,7 +103,7 @@ const CampaignDetails = () => {
             <div className="mt-[20px] flex flex-row items-center flex-wrap gap-[14px]">
               <div className="w-[52px] h-[52px] flex items-center justify-center rounded-full bg-[#2c2f32] cursor-pointer">
                 <img
-                  src={thirdweb}
+                  src={logo}
                   alt="user"
                   className="w-[60%] h-[60%] object-contain"
                 />
@@ -168,6 +191,7 @@ const CampaignDetails = () => {
 
               <CustomButton
                 btnType="button"
+                disabled={!state.status}
                 title="Fund Campaign"
                 styles="w-full bg-[#8c6dfd]"
                 handleClick={handleDonate}

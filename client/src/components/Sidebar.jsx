@@ -31,7 +31,7 @@ const Sidebar = () => {
   const { disconnect } = useStateContext();
 
   return (
-    <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
+    <div className="flex justify-between items-center flex-col sticky top-5 h-[55vh]">
       <Link to="/">
         <Icon styles="w-[52px] h-[52px] bg-secondary" imgUrl={logo} />
       </Link>

@@ -1,5 +1,5 @@
 import React from "react";
-import { tagType, thirdweb } from "../assets";
+import { logo, tagType } from "../assets";
 import { daysLeft } from "../utils";
 
 const FundCard = ({
@@ -11,12 +11,15 @@ const FundCard = ({
   amountCollected,
   image,
   handleClick,
+  status,
 }) => {
   const remainingDays = daysLeft(deadline);
 
   return (
     <div
-      className="sm:w-[288px] w-full rounded-[15px] bg-secondary cursor-pointer"
+      className={`sm:w-[288px] w-full rounded-[15px] bg-secondary shadow-lg cursor-pointer ${
+        status ? "hover:scale-110 transition-all" : ""
+      }`}
       onClick={handleClick}
     >
       <img
@@ -27,7 +30,7 @@ const FundCard = ({
 
       <div className="flex flex-col p-4">
         <p className="mr-0 mt-[4px] mb-2 font-epilogue font-medium text-[12px] text-[#808191]">
-          Aktive
+          {status ? "Active" : "Closed"}
         </p>
 
         <div className="block">
@@ -60,11 +63,7 @@ const FundCard = ({
 
         <div className="flex items-center mt-[20px] gap-[12px]">
           <div className="w-[30px] h-[30px] rounded-full flex justify-center items-center bg-[#13131a]">
-            <img
-              src={thirdweb}
-              alt="user"
-              className="w-1/2 h-1/2 object-contain"
-            />
+            <img src={logo} alt="user" className="w-1/2 h-1/2 object-contain" />
           </div>
           <p className="flex-1 font-epilogue font-normal text-[12px] text-[#808191] truncate">
             by <span className="text-black">{owner}</span>

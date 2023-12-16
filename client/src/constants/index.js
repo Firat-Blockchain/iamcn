@@ -9,6 +9,12 @@ import {
 
 export const navlinks = [
   {
+    name: "profile",
+    imgUrl: profile,
+    link: "/profile",
+    disabled: false,
+  },
+  {
     name: "dashboard",
     imgUrl: dashboard,
     link: "/",
@@ -29,12 +35,6 @@ export const navlinks = [
     imgUrl: withdraw,
     link: "/",
     disabled: true,
-  },
-  {
-    name: "profile",
-    imgUrl: profile,
-    link: "/profile",
-    disabled: false,
   },
   {
     name: "logout",
