@@ -88,6 +88,7 @@ app.get('/generateQRAndSendWhatsApp', async (req, res) => {
 });
 
 // Express sunucusunu başlatma
-module.exports = () => {
-    return app;
-  };
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Express sunucusu çalışıyor. Port: ${PORT}`);
+});
