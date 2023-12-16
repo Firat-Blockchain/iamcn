@@ -3,23 +3,25 @@ import {
   useAddress,
   useContract,
   useMetamask,
-  useDisconnect,
   useContractWrite,
+  useDisconnect,
 } from "@thirdweb-dev/react";
+import { ethers } from "ethers";
 
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-  const address = useAddress();
-  const connect = useMetamask();
-  const disconnect = useDisconnect();
   const { contract } = useContract(
-    "0xb882B2314A7f50d84E515603f4a997C11F78eA58"
+    "0x6365224BD83C1bf442D93547Ab065D0152bE9F9E"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
     "createCampaign"
   );
+
+  const address = useAddress();
+  const connect = useMetamask();
+  const disconnect = useDisconnect();
 
   const publishCampaign = async (form) => {
     try {
@@ -97,13 +99,14 @@ export const StateContextProvider = ({ children }) => {
     <StateContext.Provider
       value={{
         address,
+        contract,
         connect,
         createCampaign: publishCampaign,
         getCampaigns,
-        disconnect,
         getUserCampaigns,
         donate,
         getDonations,
+        disconnect,
       }}
     >
       {children}
