@@ -15,6 +15,7 @@ const CampaignDetails = () => {
   const [amount, setAmount] = useState("");
   const [donators, setDonators] = useState([]);
   const remainingDays = daysLeft(state.deadline);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
@@ -25,7 +26,11 @@ const CampaignDetails = () => {
     return acc + Number(curr.donation);
   }, 0);
 
-  const isCompleted = state.target <= sumDonations ? true : false;
+  useEffect(() => {
+    if (sumDonations >= state.target) {
+      setIsCompleted(true);
+    }
+  }, [sumDonations]);
 
   const fetchNotify = async () => {
     const req = await fetch(
@@ -39,12 +44,6 @@ const CampaignDetails = () => {
       }
     );
   };
-
-  console.log(isCompleted);
-
-  useEffect(() => {
-    isCompleted && fetchNotify();
-  }, [isCompleted, state.status]);
 
   useEffect(() => {
     if (contract) fetchDonators();
@@ -62,6 +61,13 @@ const CampaignDetails = () => {
   return (
     <div className="mt-20">
       {isLoading && <Loader />}
+      <CustomButton
+        btnType="button"
+        disabled={isCompleted}
+        title="Start Transport"
+        styles="bg-[#8c6dfd]"
+        handleClick={fetchNotify}
+      />
       <div className="w-full flex md:flex-row flex-col mt-10 gap-[30px]">
         <div className="flex-1 flex-col">
           <img
@@ -92,7 +98,6 @@ const CampaignDetails = () => {
           <CountBox title="Total Backers" value={donators.length} />
         </div>
       </div>
-
       <div className="mt-[60px] flex lg:flex-row flex-col gap-5">
         <div className="flex-[2] flex flex-col gap-[40px]">
           <div>
@@ -112,9 +117,6 @@ const CampaignDetails = () => {
                 <h4 className="font-epilogue font-semibold text-[14px] text-black break-all">
                   {state.owner}
                 </h4>
-                <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">
-                  10 Campaigns
-                </p>
               </div>
             </div>
           </div>
@@ -191,7 +193,7 @@ const CampaignDetails = () => {
 
               <CustomButton
                 btnType="button"
-                disabled={!state.status}
+                disabled={!state.status || isCompleted}
                 title="Fund Campaign"
                 styles="w-full bg-[#8c6dfd]"
                 handleClick={handleDonate}
