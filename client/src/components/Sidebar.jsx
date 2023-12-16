@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logo } from "../assets";
 import { navlinks } from "../constants";
+import { useStateContext } from "../context";
 
 const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
   <div
@@ -27,6 +28,7 @@ const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState("dashboard");
+  const { disconnect } = useStateContext();
 
   return (
     <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
@@ -45,6 +47,10 @@ const Sidebar = () => {
                 if (!link.disabled) {
                   setIsActive(link.name);
                   navigate(link.link);
+                }
+                if (link.name === "logout") {
+                  disconnect();
+                  navigate("/");
                 }
               }}
             />
