@@ -14,7 +14,7 @@ export const StateContextProvider = ({ children }) => {
   const connect = useMetamask();
   const disconnect = useDisconnect();
   const { contract } = useContract(
-    "0xf59A1f8251864e1c5a6bD64020e3569be27e6AA9"
+    "0xb882B2314A7f50d84E515603f4a997C11F78eA58"
   );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,

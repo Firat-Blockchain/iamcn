@@ -10,7 +10,10 @@ import { StateContextProvider } from "./context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <ThirdwebProvider activeChain={Omchain} clientId={"id"}>
+  <ThirdwebProvider
+    activeChain={Omchain}
+    clientId={"6f138582e1821fecdf41e29d6152c2f5"}
+  >
     <Router>
       <StateContextProvider>
         <App />
