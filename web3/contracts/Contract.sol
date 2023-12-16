@@ -13,6 +13,7 @@ contract Charitycampaign {
         string image;
         address[] donators;
         uint256[] donations;
+        bool status;
     }
 
     mapping(uint256 => Campaign) public campaigns;
@@ -31,6 +32,7 @@ contract Charitycampaign {
         campaign.deadline = _deadline;
         campaign.amountCollected = 0;
         campaign.image = _image;
+        campaign.status = true;
 
         numberOfCampaigns++;
 
@@ -50,6 +52,11 @@ contract Charitycampaign {
         if(sent) {
             campaign.amountCollected = campaign.amountCollected + amount;
         }
+    }
+
+    function updateCampaignStatus(uint256 _id, bool _newStatus) public {
+        Campaign storage campaign = campaigns[_id];
+        campaign.status = _newStatus;
     }
 
     function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
