@@ -59,7 +59,6 @@ app.post('/validate', (req, res) => {
   });
 });
 
-// Sunucuyu dinleme
-app.listen(port, () => {
-  console.log(`Sunucu ${port} portunda çalışıyor`);
-});
+module.exports = () => {
+  return app;
+};
