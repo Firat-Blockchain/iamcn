@@ -3,17 +3,6 @@ pragma solidity ^0.8.9;
 
 contract Charitycampaign {
 
-    address public owner;
-
-    constructor() {
-        owner = msg.sender;
-    }
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only the owner can call this function");
-        _;
-    }
-
     struct Campaign {
         address owner;
         string title;
@@ -24,13 +13,14 @@ contract Charitycampaign {
         string image;
         address[] donators;
         uint256[] donations;
+        bool status;
     }
 
     mapping(uint256 => Campaign) public campaigns;
 
     uint256 public numberOfCampaigns = 0;
 
-    function createCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public onlyOwner returns (uint256) {
+    function createCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
 
         require(campaign.deadline < block.timestamp, "The deadline should be a date in the future.");
@@ -42,6 +32,7 @@ contract Charitycampaign {
         campaign.deadline = _deadline;
         campaign.amountCollected = 0;
         campaign.image = _image;
+        campaign.status = true;
 
         numberOfCampaigns++;
 
@@ -61,6 +52,11 @@ contract Charitycampaign {
         if(sent) {
             campaign.amountCollected = campaign.amountCollected + amount;
         }
+    }
+
+    function updateCampaignStatus(uint256 _id, bool _newStatus) public {
+        Campaign storage campaign = campaigns[_id];
+        campaign.status = _newStatus;
     }
 
     function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
