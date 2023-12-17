@@ -707,34 +707,45 @@ IAMCN, omChain üzerinde geliştirilme sebepleri şu şekilde özetlenebilir:
 
 4. **Topluluk Odaklı Yaklaşım:** omChain, genellikle topluluk tarafından desteklenen bir blockchain ağıdır. IAMCN gibi toplumsal fayda sağlamayı amaçlayan projeler için, topluluk odaklı bir platformda geliştirilmek önemli bir avantaj sağlar.
 
-5. **
+5. **Destek Alabileceğimiz biri (Osman Kuzucu)**
+Kendisi yarışmamızın sponsorlarından biri olduğundan ve omchain hakkında kendisinden pek çok bilgi alabileceğimizden dolayı omChain geliştirmeye karar verdik.
 
 Bu sebeplerden dolayı, IAMCN gibi şeffaflık, güvenilirlik ve izlenebilirlik odaklı projeler omChain gibi güvenilir bir blockchain ağında geliştirilerek, hedeflenen amaçlara daha uygun bir şekilde hizmet edebilir.
   
-
-  
-
 ### Toplanan para nerede tutuluyor?
 
-  
+Bağış kampanyalarının yönetimi ve bağışların güvenli bir şekilde toplanması, şeffaf bir süreç ve yasal düzenlemelere uygunluk gerektirir. Kampanyanın oluşturulmasını talep eden kuruluş, bize tanıttığı ve kendisine ait olduğunu teyit ettiği özel cüzdan (wallet) bilgileriyle başvuruda bulunur. Bu aşamada, kuruluşun sahip olduğu cüzdanın yasal olarak izinlendirilip izinlendirilmediğini devlet kurumları aracılığıyla detaylı bir değerlendirme süreci izler.
 
-  
+Kuruluşun belirttiği cüzdanın ve kuruluşun yasal durumunun değerlendirilmesinin ardından, onaylanmış kuruluşlar için kampanya oluşturma süreci başlatılır. Bu süreçte toplanacak olan tüm bağışlar, belirlenen resmi cüzdan üzerinde güvenle saklanır ve yönetilir.
+
+Bu yaklaşım, bağışların güvenliğini ve şeffaflığını sağlamak amacıyla yasal düzenlemeler ve izinlerin titizlikle incelendiği bir süreci içermektedir. Böylelikle, bağış yapanlar tarafından gönderilen kaynakların resmi bir şekilde belirlenen hesaplarda toplanması ve kampanyanın ilgili hedefler doğrultusunda etkin bir şekilde yönetilmesi temin edilir.
 
 ### Kamu yararına olan tarafları nelerdir?
 
-  
 
   
 
 ### Kamuya entegresi nasıl gerçekleşecek?
 
-  
+
 
   
 
 ### Neden blockchain kullandık?
 
-  
+Blockchain teknolojisinin kullanımı, bağış süreçlerinde ve bağışların yönetiminde bir dizi önemli avantaj sağlar:
+
+1. **Güvenilirlik ve Şeffaflık:** Blockchain, merkezi olmayan yapısı ve dağıtık defteri sayesinde bağışların güvenilir bir şekilde takip edilmesini sağlar. Her bağış ve işlem, blok zincirinde şeffaf bir şekilde kaydedilir ve bu kayıtlar değiştirilemez niteliktedir. Bu da bağış yapanların ve bağış alanların işlemlere dair güven duymasını sağlar.
+
+2. **İzlenebilirlik ve Hesap Verebilirlik:** Bağış süreçleri, blok zincirinde kaydedildiği için her adımı izlenebilir olur. Bağış yapanlar ve bağış alanlar, bağışların nereye gittiğini, nasıl kullanıldığını tam olarak görebilir. Bu da hesap verebilirlik ve şeffaflık sağlar.
+
+3. **Güvenlik:** Blockchain'in dağıtık doğası ve kriptografik algoritmaları, verilerin güvenliğini artırır. Bu, bilgilerin değiştirilmesini veya manipüle edilmesini önler. Dolayısıyla, bağış süreçleri ve bağışla ilgili finansal işlemler daha güvenli hale gelir.
+
+4. **Aracısızlık ve Düşük Maliyet:** Blockchain, merkezi bir otoriteye veya aracıya ihtiyaç duymadan işleyebilir. Bu, aracılar aracılığıyla oluşabilecek ek maliyetleri azaltır kullanıdığımız ağ olan omChain düşük işlem ücretlerine sahiptir ve aktarım yapmak fazlasıyla kolaydır. Dolayısıyla, bağışların doğrudan bağış alanlara ulaşmasını ve daha düşük maliyetle işlem yapılmasını sağlar.
+
+5. **Küresel Erişim:** Blockchain teknolojisi, coğrafi sınırları aşabilir ve küresel çapta bağış yapılmasını kolaylaştırabilir. Sınırları aşarak dünya genelinde bağış yapma ve bağışlanan kaynaklara ulaşma imkanı sunar.
+
+Bu nedenlerle, blockchain teknolojisinin kullanımı bağış süreçlerini daha şeffaf, güvenilir, izlenebilir ve güvenli hale getirir. Bu da bağış yapanlar ve bağış alanlar arasında güven oluştururken topluma daha fazla katkı sağlama potansiyeli taşır.
 
   
 
@@ -745,8 +756,6 @@ Bu sebeplerden dolayı, IAMCN gibi şeffaflık, güvenilirlik ve izlenebilirlik 
   
 
 ### Platform üzerinde nasıl kampanya oluşturulur?
-
-  
 
   
 

@@ -4,11 +4,16 @@ const fs = require('fs');
 const crypto = require('crypto');
 const axios = require('axios');
 require('dotenv').config();
+const cors = require('cors');
 const app = express();
 
-// QR kod oluşturma ve WhatsApp'a gönderme fonksiyonu
+const port = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
 async function generateQRAndSendWhatsApp(urlParams) {
-    const urlString = `http://localhost:3000/yuppi?id=${urlParams.id}&secretKey=`;
+    const urlString = `http://localhost:${port}/validate?id=${urlParams.id}&secret=`;
 
     QRCode.toFile('./qrcode.png', urlString, async (err) => {
         if (err) throw err;
@@ -27,13 +32,13 @@ async function generateQRAndSendWhatsApp(urlParams) {
                 url: 'https://whatsapp-messaging-hub.p.rapidapi.com/WhatsappSendMessage',
                 headers: {
                     'content-type': 'application/json',
-                    'X-RapidAPI-Key': process.env.XRapidAPIKey, // RapidAPI anahtarınızı buraya ekleyin
+                    'X-RapidAPI-Key': process.env.XRapidAPIKey,
                     'X-RapidAPI-Host': 'whatsapp-messaging-hub.p.rapidapi.com'
                 },
                 data: {
-                    token: process.env.RapidAPI_TOKEN, // WhatsApp token'ınızı buraya ekleyin
+                    token: process.env.RapidAPI_TOKEN,
                     number: urlParams.telno1,
-                    message: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=id=${urlParams.id}&secretKey=${secretKey}` // bu localhostun url bilgisidir
+                    message: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=id=${urlParams.id}&secretKey=${secretKey}`
                 }
             };
 
@@ -46,11 +51,11 @@ async function generateQRAndSendWhatsApp(urlParams) {
                     url: 'https://whatsapp-messaging-hub.p.rapidapi.com/WhatsappSendMessage',
                     headers: {
                         'content-type': 'application/json',
-                        'X-RapidAPI-Key': process.env.XRapidAPIKey, // RapidAPI anahtarınızı buraya ekleyin
+                        'X-RapidAPI-Key': process.env.XRapidAPIKey,
                         'X-RapidAPI-Host': 'whatsapp-messaging-hub.p.rapidapi.com'
                     },
                     data: {
-                        token: process.env.RapidAPI_TOKEN, // WhatsApp token'ınızı buraya ekleyin
+                        token: process.env.RapidAPI_TOKEN,
                         number: urlParams.telno2,
                         message: secretKey
                     }
@@ -65,7 +70,33 @@ async function generateQRAndSendWhatsApp(urlParams) {
     });
 }
 
-// Express ile QR kodu oluşturma ve WhatsApp'a gönderme işlemini başlatma
+app.post('/validate', (req, res) => {
+    const { id, secret } = req.query;
+
+    if (!id || !secret) {
+        return res.status(400).json({ success: false, message: 'ID ve secret parametreleri gereklidir.' });
+    }
+
+    fs.readFile('./id_secret.json', 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Dosya okuma hatası.' });
+        }
+
+        let idSecretData;
+        try {
+            idSecretData = JSON.parse(data);
+        } catch (parseError) {
+            return res.status(500).json({ success: false, message: 'JSON parse hatası.' });
+        }
+
+        if (idSecretData.id == id && idSecretData.secretKey == secret) {
+            return res.json({ success: true });
+        } else {
+            return res.json({ success: false });
+        }
+    });
+});
+
 app.get('/generateQRAndSendWhatsApp', async (req, res) => {
     const { id, telno1, telno2 } = req.query;
 
@@ -87,8 +118,9 @@ app.get('/generateQRAndSendWhatsApp', async (req, res) => {
     }
 });
 
-// Express sunucusunu başlatma
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Express sunucusu çalışıyor. Port: ${PORT}`);
+app.listen(port, () => {
+    console.log(`Express sunucusu çalışıyor. Port: ${port}`);
 });
+
+
+
