@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStateContext } from "../context";
+import { api_url } from "../utils/global";
 import { CustomButton } from "../components";
 
 const Validate = () => {
@@ -12,7 +13,7 @@ const Validate = () => {
 
   const validate = async () => {
     const req = await fetch(
-      `https://834a-212-174-46-103.ngrok-free.app/validate?id=${id}&secret=${secretKey}`,
+      `${api_url}/validate?id=${id}&secret=${secretKey}`,
       {
         method: "POST",
         headers: {

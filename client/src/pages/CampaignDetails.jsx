@@ -5,6 +5,7 @@ import { useStateContext } from "../context";
 import { CountBox, CustomButton, Loader } from "../components";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { logo } from "../assets";
+import { api_url } from "../utils/global";
 
 const CampaignDetails = () => {
   const { state } = useLocation();
@@ -33,7 +34,7 @@ const CampaignDetails = () => {
 
   const fetchNotify = async () => {
     const req = await fetch(
-      `https://834a-212-174-46-103.ngrok-free.app/generateQRAndSendWhatsApp?id=${state.pId}&telno1=905372553088&telno2=905512623505`,
+      `${api_url}/generateQRAndSendWhatsApp?id=${state.pId}&telno1=905372553088&telno2=905512623505`,
       {
         method: "GET",
         headers: {
