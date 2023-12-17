@@ -1,0 +1,10 @@
+# Node modules
+node_modules/
+
+# Örnek log dosyaları
+logs/
+*.log
+
+# Derlenmiş dosyalar
+dist/
+build/
