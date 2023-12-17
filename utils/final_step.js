@@ -32,13 +32,13 @@ async function generateQRAndSendWhatsApp(urlParams) {
                 url: 'https://whatsapp-messaging-hub.p.rapidapi.com/WhatsappSendMessage',
                 headers: {
                     'content-type': 'application/json',
-                    'X-RapidAPI-Key': process.env.XRapidAPIKey,
+                    'X-RapidAPI-Key': '5d8de5044cmsh25f8ec12e0cf9b6p1b400bjsn7e94144195c9',
                     'X-RapidAPI-Host': 'whatsapp-messaging-hub.p.rapidapi.com'
                 },
                 data: {
-                    token: process.env.RapidAPI_TOKEN,
-                    number: urlParams.telno1,
-                    message: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=id=${urlParams.id}&secretKey=${secretKey}`
+                    token: "F6DVNxcNlGdYb68PQmX0B2ygO0XiGGd0GN8up8aY6gY=",
+                    number: '905512623505',
+                    message: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:5173/validate?id=${urlParams.id}`
                 }
             };
 
@@ -51,12 +51,12 @@ async function generateQRAndSendWhatsApp(urlParams) {
                     url: 'https://whatsapp-messaging-hub.p.rapidapi.com/WhatsappSendMessage',
                     headers: {
                         'content-type': 'application/json',
-                        'X-RapidAPI-Key': process.env.XRapidAPIKey,
+                        'X-RapidAPI-Key': '5d8de5044cmsh25f8ec12e0cf9b6p1b400bjsn7e94144195c9',
                         'X-RapidAPI-Host': 'whatsapp-messaging-hub.p.rapidapi.com'
                     },
                     data: {
-                        token: process.env.RapidAPI_TOKEN,
-                        number: urlParams.telno2,
+                        token: "F6DVNxcNlGdYb68PQmX0B2ygO0XiGGd0GN8up8aY6gY=",
+                        number: '905372553088',
                         message: secretKey
                     }
                 };
