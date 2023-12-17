@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { StateContextProvider } from "./context";
 import { Omchain } from "@thirdweb-dev/chains";
 import App from "./App";
